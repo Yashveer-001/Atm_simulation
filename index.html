@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATM Simulator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      margin: 0;
+      padding: 0;
+    }
+
+    .atm-container {
+      max-width: 450px;
+      margin: 80px auto;
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #0077b6;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #023e8a;
+    }
+
+    .output {
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #111;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .atm-container {
+        margin: 40px 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="atm-container">
+    <h2>ATM Simulator</h2>
+
+    <label for="pin">Enter PIN:</label>
+    <input type="password" id="pin" placeholder="****">
+
+    <button onclick="login()">Login</button>
+
+    <div id="atm-panel" style="display:none;">
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" placeholder="Enter amount">
+
+      <button onclick="deposit()">Deposit</button>
+      <button onclick="withdraw()">Withdraw</button>
+      <button onclick="checkBalance()">Check Balance</button>
+    </div>
+
+    <div class="output" id="messageBox" style="display:none;"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 ATM Simulation | Safe. Simple. Secure.
+  </footer>
+
+  <script>
+    const correctPin = "1234"; // You can change this PIN
+    let balance = 5000; // Starting balance
+
+    function login() {
+      const pinInput = document.getElementById("pin").value;
+      const atmPanel = document.getElementById("atm-panel");
+      const msgBox = document.getElementById("messageBox");
+
+      if (pinInput === correctPin) {
+        atmPanel.style.display = "block";
+        msgBox.style.display = "block";
+        msgBox.innerText = "Login successful. Welcome to your account.";
+      } else {
+        atmPanel.style.display = "none";
+        msgBox.style.display = "block";
+        msgBox.innerText = "Incorrect PIN. Please try again.";
+      }
+    }
+
+    function deposit() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const msgBox = document.getElementById("messageBox");
+
+      if (amount > 0) {
+        balance += amount;
+        msgBox.innerText = `₹${amount} deposited successfully.\nCurrent Balance: ₹${balance}`;
+      } else {
+        msgBox.innerText = "Please enter a valid deposit amount.";
+      }
+    }
+
+    function withdraw() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const msgBox = document.getElementById("messageBox");
+
+      if (amount > 0 && amount <= balance) {
+        balance -= amount;
+        msgBox.innerText = `₹${amount} withdrawn successfully.\nRemaining Balance: ₹${balance}`;
+      } else if (amount > balance) {
+        msgBox.innerText = "Insufficient funds.";
+      } else {
+        msgBox.innerText = "Please enter a valid withdrawal amount.";
+      }
+    }
+
+    function checkBalance() {
+      const msgBox = document.getElementById("messageBox");
+      msgBox.innerText = `Your current balance is: ₹${balance}`;
+    }
+  </script>
+
+</body>
+</html>
